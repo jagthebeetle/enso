@@ -1,0 +1,54 @@
+{
+  "name": "enso",
+  "version": "1.0.0",
+  "description": "Directed acyclic runner of tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jagthebeetle/enso.git"
+  },
+  "keywords": [
+    "dag",
+    "directed",
+    "acyclic",
+    "graph",
+    "task",
+    "promise"
+  ],
+  "author": "jagthebeetle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jagthebeetle/enso/issues"
+  },
+  "homepage": "https://github.com/jagthebeetle/enso#readme",
+  "devDependencies": {
+    "@types/jest": "^22.1.1",
+    "jest": "^22.1.4",
+    "prettier": "^1.10.2",
+    "ts-jest": "^22.0.3",
+    "ts-loader": "^3.4.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1",
+    "webpack": "^3.10.0"
+  },
+  "prettier": {
+    "trailingComma": "all"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "/__tests__/.*-test\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
