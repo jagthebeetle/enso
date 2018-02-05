@@ -1,4 +1,4 @@
-# enso
+# 🐍 enso
 Compose and run task graphs. In part, this is a study in type-checking.
 
 ## Results
