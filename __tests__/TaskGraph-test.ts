@@ -33,8 +33,10 @@ describe("TaskGraph", () => {
   });
 
   describe('getNodeOutput()', () => {
-    it('should run task graphs.', (done) => {
-      const g = new TaskGraph<ComplexGraph>();
+    let g: TaskGraph<ComplexGraph>;
+
+    beforeEach(() => {
+      g = new TaskGraph();
       g.addNode('MakeNums1', Task.from('a', {}, () => [1, 2, 3]));
       g.addNode('MakeNums2', Task.from('b', {}, () => [3, 4, 5]));
       g.addNode('ConcatNums', Task.from(
@@ -53,9 +55,22 @@ describe("TaskGraph", () => {
         ({DoubleNums, ConcatNums}) => DoubleNums.concat(ConcatNums)
                                                 .reduce((a, b) => a + b),
       ));
+    });
+
+    it('should run task graphs.', (done) => {
       g.getNodeOutput('ReduceNums').then(result => {
         // A = (1, 2, 3), B = (3, 4, 5), C = A.B, D = 2*B, E = SUM(...C, ...D)
         expect(result).toBe(42);
+        done();
+      });
+    });
+
+    it('should run nodes once, even if they are used more than once.', done => {
+      // This node is a dependency of 2 nodes (C and D).
+      const task = g.getNode('MakeNums2');
+      const runSpy = jest.spyOn(task, 'run');
+      g.getNodeOutput('ReduceNums').then(result => {
+        expect(runSpy).toHaveBeenCalledTimes(1);
         done();
       });
     });
