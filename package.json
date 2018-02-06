@@ -36,6 +36,8 @@
     "webpack": "^3.10.0"
   },
   "prettier": {
+    "bracketSpacing": false,
+    "singleQuote": true,
     "trailingComma": "all"
   },
   "jest": {
