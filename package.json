@@ -26,6 +26,7 @@
   "homepage": "https://github.com/jagthebeetle/enso#readme",
   "devDependencies": {
     "@types/jest": "^22.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "jest": "^22.1.4",
     "prettier": "^1.10.2",
     "ts-jest": "^22.0.3",
@@ -50,5 +51,10 @@
       "json",
       "node"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
