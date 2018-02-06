@@ -1,4 +1,4 @@
-import { Task } from '../src/Task';
+import { SimpleTask, Task } from '../src/Task';
 
 type SquareCircleInputs = {
   someInput: number;
@@ -15,6 +15,11 @@ describe('Task', () => {
       expect(t.inputs).toEqual(['someInput']);
       expect(t.id).toBe('squareCircle');
       expect(t.run({someInput: Math.PI ** 0.5})).toBe(1);
+    });
+
+    it('should return a SimpleTask.', () => {
+      const t = Task.from('A', {}, () => 'A');
+      expect(t).toBeInstanceOf(SimpleTask);
     });
   });
 });

@@ -15,14 +15,19 @@ export abstract class Task<I extends IInputMap, O> {
     inputs: J,
     run: (inputs: J) => P | Promise<P>,
   ) {
-    class SyntheticTask extends Task<J, P> {
-      public id = id;
-      public inputs: Array<keyof J> = Object.keys(inputs);
-      public run = run;
-    }
-    return new SyntheticTask();
+    return new SimpleTask(id, Object.keys(inputs), run);
   }
   public abstract id: string;
   public abstract inputs: Array<InputKey<I>>;
   public abstract run: (inputs: I) => O | Promise<O>;
+}
+
+export class SimpleTask<I, O> extends Task<I, O> {
+  constructor(
+    public id: string,
+    public inputs: Array<keyof I>,
+    public run: (inputs: I) => O | Promise<O>,
+  ) {
+    super();
+  }
 }
