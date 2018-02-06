@@ -1,5 +1,5 @@
 # 🐍 enso
-Compose and run task graphs. In part, this is a study in type-checking.
+Compose and run task graphs. In part, this is a study in Typescript's type-checking.
 
 ## Results
 ### `type` can be preferable to `interface`
@@ -35,15 +35,36 @@ type StrictestManifest = {
   onlyThisNode: Task<SomeFoo, SomeBar>;
   andThatNode: Task<SomeBaz, SomeQuux>;
 }
-const g: Graph<StrictestManifest> = new Graph() // `g` only wants specific node IDs!
-g.addNode('SomeRandomNode', node) // Error: Argument of type '"SomeRandomNode"' is not assignable...
+const g: Graph<StrictestManifest> = new Graph(); // `g` only wants specific node IDs!
+g.addNode('SomeRandomNode', node); // Error: Argument of type '"SomeRandomNode"' is not assignable...
 ```
 
 Of course, in the event of a graph whose nodes will only be known at runtime, we can fall back to the `BasicNodeManifest` without losing our ability to compile code.
 
 ```typescript
-const g = new Graph()
-g.addNode('SomeRandomNode', node)
+const g = new Graph();
+g.addNode('SomeRandomNode', node);
 ```
 
-### Union types 
+### Intersection types
+`addNode` could be taken a step further with some functional magic. By making the method construct a new graph, parameterized with the union of the current graph's node manifest and a new node manifest, we would get some pleasantly pure and functional powers:
+
+```typescript
+class Graph<M extends {}> {
+  constructor(public nodes: M) { }
+  addNode<K extends string, I, O>(
+    id: K, node: Task<I, O>
+  ) {
+    const nodes = Object.assign({ [id]: node }, this.nodes);
+    const g = new Graph(
+      nodes as M & {[P in K]: Task<I, O>}
+    );
+    return g;
+  }
+}
+
+const g = new Graph({});
+// g.getNode('foo') // Error! Typescript knows this doesn't exist on g.
+const g1 = g.addNode('foo', someTask as Task<number, string>);
+g1.getNode('foo'); // Typescript knows this is a Task<number, string>!
+```
